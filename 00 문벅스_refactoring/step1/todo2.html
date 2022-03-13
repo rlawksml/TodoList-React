@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+
+  <body>
+    <div class="container" id="app"></div>
+
+    <!-- react dom 라이브러리 넣어주기 -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- jsx를 도와주는 babel 넣어주기 -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+      const Store = {
+        save(saveitem) {
+          localStorage.setItem('todos', JSON.stringify(saveitem));
+        },
+        load() {
+          return JSON.parse(localStorage.getItem('todos'));
+        },
+      };
+
+      const App = () => {
+        const [todoItemList, setTodoItemList] = React.useState(Store.load() ? Store.load() : []);
+        const [todoCount, setTodoCount] = React.useState(0);
+
+        React.useEffect(() => {
+          setTodoCount(todoItemList.length);
+        }, [todoItemList]);
+
+        const Render = ({ todo }) => {
+          const HandleItemDelete = (e) => {
+            setTodoItemList((prev) => {
+              return prev.filter((item) => {
+                return item.id !== todo.id;
+              });
+            });
+
+            Store.save(todoItemList);
+          };
+
+          const HandleCompletedItem = (e) => {
+            e.target.closest('li').classList.add('completed');
+
+            setTodoItemList((prev) => {
+              return prev.map((item) => {
+                if (item.id === todo.id) item.completed = item.completed ? false : true;
+                return item;
+              });
+            });
+            Store.save(todoItemList);
+          };
+
+          return (
+            <li className={`${todo.completed && 'completed'}`}>
+              <div className="view">
+                <input
+                  className="toggle"
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={HandleCompletedItem}
+                />
+                <label className="label">{todo.work}</label>
+                <button onClick={HandleItemDelete} className="destroy">
+                  X
+                </button>
+              </div>
+              <input className="edit" />
+            </li>
+          );
+        };
+
+        const Title = () => {
+          return <h2>Make Todo List</h2>;
+        };
+
+        const TodoListInputForm = () => {
+          const [todoItem, setTodoItem] = React.useState('');
+
+          const onChange = (e) => {
+            setTodoItem(e.target.value);
+          };
+
+          const onSubmit = (e) => {
+            e.preventDefault();
+            setTodoItemList((prev) => {
+              return [...prev, { work: todoItem, id: Date.now(), completed: false }];
+            });
+            setTodoItem('');
+            Store.save(todoItemList);
+          };
+
+          return (
+            <form onSubmit={onSubmit} id="todo-form" className="todoList-ct__Form" action="">
+              <input
+                id="todo-input"
+                className="todoList-ct__Form__inputTag"
+                value={todoItem}
+                onChange={onChange}
+                type="text"
+              />
+            </form>
+          );
+        };
+
+        const TodoListContainer = () => {
+          return (
+            <ul id="todo-list" className="todo-list">
+              {todoItemList.map((item) => {
+                return <Render todo={item} key={item.id} />;
+              })}
+            </ul>
+          );
+        };
+
+        const TodoListContainerFooter = () => {
+          return (
+            <div className="footer">
+              <p className="footer__text count-item">오늘 할 일 {todoCount}개</p>
+              <p className="all-item footer__text">전체보기</p>
+              <p className="footer__text active-item">남은 할 일</p>
+              <p className="footer__text completed-item">완료 한 일</p>
+            </div>
+          );
+        };
+
+        return (
+          <div>
+            <Title />
+            <div className="todoList-ct">
+              <TodoListInputForm />
+              <TodoListContainer />
+              <TodoListContainerFooter />
+            </div>
+          </div>
+        );
+      };
+      const Container = document.querySelector('#app');
+      ReactDOM.render(<App />, Container);
+    </script>
+  </body>
+</html>

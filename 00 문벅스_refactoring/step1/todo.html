@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/main.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h2 class="test">javaScript</h2>
+
+    <div class="todoList-ct">
+      <form id="todo-form" class="todoList-ct__Form" action="">
+        <input id="todo-input" class="todoList-ct__Form__inputTag" type="text" />
+      </form>
+
+      <ul id="todo-list" class="todo-list"></ul>
+
+      <div class="footer">
+        <p class="footer__text count-item">오늘 할 일 0개</p>
+        <p class="all-item footer__text">전체보기</p>
+        <p class="footer__text active-item">남은 할 일</p>
+        <p class="footer__text completed-item">완료 한 일</p>
+        <!-- <p class="footer__text clear-item">완료 지우기</p> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="app"></div>
+
+  <script type="module" src="./todo.js"></script>
+  <!-- react dom 라이브러리 넣어주기 -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- jsx를 도와주는 babel 넣어주기 -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <!-- <script type="module" defer src="./todo.js"></script> -->
+  <script type="text/babel">
+    //컴포넌트는 대문자로 시작한다.
+
+      const App = () => {
+        const [userName, setUserName] = React.useState(['Genie']);
+        const [todoItemList, setTodoItemList] = React.useState([]);
+        
+        
+        const TodoListForm = () => {
+          
+          const [text,setText] = React.useState("");
+        
+          const onChange = (e) => {
+            setText(e.target.value);
+          }
+
+          
+          //아이템 추가
+          const HandleItemSubmit = (e) => {
+            e.preventDefault();
+
+            setTodoItemList((prev)=>{
+              return [...prev, {work:text,id:Date.now(),completed:false}]
+            })
+
+            setText("");
+          };
+
+          return (
+            <form
+              id="todo-form"
+              onSubmit={HandleItemSubmit}
+              className="todoList-ct__Form"
+            >
+              <input id="todo-input" className="todoList-ct__Form__inputTag" type="text" value={text} onChange={onChange} />
+            </form>
+          );
+        };
+
+        const TodoListItemsContainer = () => {
+
+          return (
+            <ul id="todo-list" className="todo-list">
+              {todoItemList.map((item) => {
+               return <RenderItem todo={item} key={item.id}/>;
+              })}
+            </ul>
+          );
+        };
+
+        const TodoListFooter = () => {
+          return (
+            <div className="footer">
+              <p className="footer__text count-item">오늘 할 일 0개</p>
+              <p className="all-item footer__text">전체보기</p>
+              <p className="footer__text active-item">남은 할 일</p>
+              <p className="footer__text completed-item">완료 한 일</p>
+            </div>
+          );
+        };
+
+
+        const RenderItem = ({todo }) => {
+
+           //아이템 완료
+          const HandleCompletedItem = (e) => {
+            e.target.closest('li').classList.add('completed');
+
+            setTodoItemList((prev)=>
+              prev.map((item)=>{
+                if(item.id === todo.id) item.completed = item.completed ? false : true;
+                return item;
+              })
+            )
+          };
+
+            //아이템 삭제
+            const HandleItemDelete = (e) => {
+              const selectedItem = e.target.closest('li').querySelector('label').innerText;
+              setTodoItemList(
+                todoItemList.filter((item) => {
+                  return selectedItem != item.work;
+                }),
+              );
+            };
+
+          return (
+            <li className={`${todo.completed && "completed"}`}>
+              <div className="view">
+                <input className="toggle" type="checkbox" checked={todo.completed} onChange={HandleCompletedItem}/>
+                <label className="label">{todo.work}</label>
+                <button onClick={HandleItemDelete} className="destroy">
+                  X
+                </button>
+              </div>
+              <input className="edit" />
+            </li>
+
+          );
+        };
+
+        
+
+        return (
+          <div>
+            <h2 style={{ color: '' }}>
+              {userName[0] ? `${userName[0]}'s JS 💅 React` : 'JS 💅 React'}
+            </h2>
+            <div className="todoList-ct">
+              <TodoListForm/>
+              <TodoListItemsContainer/>
+              <TodoListFooter/>
+            </div>
+          </div>
+        );
+      };
+      //jsx? html 테그와 js의 혼합 사용
+      const 바탕 = document.querySelector('#app');
+
+      // append 해주는 것 ReactDOM render 인자1 = 넣어줄애 인자2 = 바탕
+      ReactDOM.render(<App />, 바탕);
+    </script>
+</body>
+
+</html>

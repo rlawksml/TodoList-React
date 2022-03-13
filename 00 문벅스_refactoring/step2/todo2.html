@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/todo2.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <h2 class="test">'s work</h2>
+
+    <nav id="todo-list-nav" class="todo-list-nav">
+
+      <div id="user-list" class="user-select-ct">
+        <!-- <button id="user-btn" class="user-btn" data-id="user0">user0</button> -->
+      </div>
+
+
+
+      <div id="user-manage-ct" class="user-manage-ct">
+        <button type="button" id="create-user-btn" class="create-user-btn">+ 유저 생성</button>
+        <button id="delete-user-btn" class="delete-user-btn">삭제 -</button>
+      </div>
+    </nav>
+
+    <div class="todoList-ct">
+      <form id="todo-form" class="todoList-ct__Form" action="">
+        <input id="todo-input" class="todoList-ct__Form__inputTag" type="text">
+      </form>
+
+      <ul id="todo-list" class="todo-list">
+      </ul>
+
+      <div class="footer">
+        <p class="footer__text count-item">오늘 할 일 0개</p>
+        <p class="all-item footer__text">전체보기</p>
+        <p class="footer__text active-item">남은 할 일</p>
+        <p class="footer__text completed-item">완료 한 일</p>
+        <!-- <p class="footer__text clear-item">완료 지우기</p> -->
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" defer src="./todo2.js"></script>
+</body>
+
+</html>

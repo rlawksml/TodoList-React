@@ -32,6 +32,10 @@
       const App = () => {
         const [todoItemList, setTodoItemList] = React.useState([]);
 
+        const inputRef = React.useRef(null);
+
+        console.log(inputRef.current)
+
         const Redner = (todo) => {
           console.log(todo);
           console.log(todoItemList);
@@ -102,6 +106,7 @@
           <div className="container">
             <h2 className="test">todo list</h2>
             <div className="todoList-ct">
+//              <input type="text"  ref={inputRef}/>
               <TodoListInputForm />
               <TodoListContainer />
               <TodoListFooter />

@@ -14,7 +14,12 @@ const TodoList = ({users, currentUser, todoItems, onDeleteItem, onUpdateItem, on
   // console.clear()
   console.log(currentUser ,'출력')
   // users의 todos만 뽑아내기
-  console.log(users.map(item => item.todos))
+  console.log(users.map(item => item))
+  const curTodos = (users.filter(item => 
+    {return item.id=== Number(currentUser) ? item : null}))
+
+  console.log(curTodos[0].todos)
+  
 
   // if(users.length>0){
   //   console.log(users.length)

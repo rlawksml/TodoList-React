@@ -10,6 +10,8 @@ const TodoContainer = ({handleTodoItem, users, setUsers, currentUser}) => {
   const [todoItems, setTodoItems] = useState([])
 
   const onDeleteItem = (data) => {
+
+    console.log(todoItems.map(item => item))
     setTodoItems(
         todoItems.filter(item => {
           return item.id !== Number(data)
@@ -35,12 +37,11 @@ const TodoContainer = ({handleTodoItem, users, setUsers, currentUser}) => {
   }
 
   const addTodoItem = (data) => {
+    // 지금 선택된 user id
+    // currentUser
+    const curuser = (users.filter(user => user.id === Number(currentUser)))
 
-
-    // handleTodoItem({
-    //   todo : data, id: nextid.current, completed : false
-    // })
-
+    console.log(curuser[0])
 
     setTodoItems(
       [...todoItems, {

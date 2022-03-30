@@ -4,42 +4,24 @@ import TodoButtons from "./TodoButtons";
 
 const TodoList = ({users, currentUser, todoItems, onDeleteItem, onUpdateItem, onCompletedItem}) => {
 
-  // const [currentUser , setCurrentUser] = useState()
-
-  const [currentTodos, setCurrentTodos] = useState(
-    users.map(item => item.todos)
-    )
-
-  console.log(currentTodos)
-  // console.clear()
-  console.log(currentUser ,'출력')
-  // users의 todos만 뽑아내기
-  console.log(users.map(item => item))
   const curTodos = (users.filter(item => 
     {return item.id=== Number(currentUser) ? item : null}))
 
-  console.log(curTodos[0].todos)
-  
-
-  // if(users.length>0){
-  //   console.log(users.length)
-  //   console.log(currentTodos)
-  // }
-
-
+    let todos
+    todos = (curTodos.length > 0 && curTodos[0].todos)
 
   return (
   <TodoListDiv>
-    {
-      // array[0].map(
-      //   (item)=>
-      //   <TodoListItem className={item.completed ? "completed" : null} key={item.id} id={item.id}>
-      //       {item.todo}
+    {todos.length > 0 &&
+      (todos.map(
+        (item)=>
+        <TodoListItem className={item.completed ? "completed" : null} key={item.id} id={item.id}>
+            {item.todo}
 
-      //     <TodoButtons onUpdate={onUpdateItem} onDelete={onDeleteItem} onCompleted={onCompletedItem}/>
+          <TodoButtons onUpdate={onUpdateItem} onDelete={onDeleteItem} onCompleted={onCompletedItem}/>
 
-      //   </TodoListItem>
-      // )
+        </TodoListItem>
+      ))
     }
   </TodoListDiv>
   )

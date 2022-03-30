@@ -43,9 +43,12 @@ const Manage = () => {
   }
 
   const handleTodoItem = (data) => {
-    // console.log(data)
-    // console.log(userList[currentUser].name === currentUserValue)
-    
+
+    const curuser = userList.filter(user => user.name === currentUserValue)
+    // console.log(curuser)
+
+    console.log(data)
+
     setUserList(userList.map( user => { 
       return user.name !== currentUserValue ? user : {...user, todos: data}
     }
